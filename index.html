@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#a91418">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%23b5161b'/%3E%3Ctext x='32' y='39' text-anchor='middle' font-size='22' font-family='Arial' font-weight='700' fill='white'%3E%D0%A8%D0%9A%3C/text%3E%3C/svg%3E">
+  <meta name="description" content="Шейх Кебаб — быстрая доставка любимых блюд по Душанбе.">
+  <title>Шейх Кебаб — доставка еды в Душанбе</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Unbounded:wght@700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="#top" aria-label="Шейх Кебаб">
+        <span class="brand-mark">ШК</span>
+        <span>
+          <strong>ШЕЙХ КЕБАБ</strong>
+          <small>Доставка по Душанбе</small>
+        </span>
+      </a>
+      <div class="header-actions">
+        <a class="whatsapp-link" href="https://wa.me/992007884423" target="_blank" rel="noopener" aria-label="Написать в WhatsApp">
+          <span class="whatsapp-dot"></span>
+          <span>WhatsApp</span>
+        </a>
+        <button class="cart-button" type="button" data-open-cart>
+          <span>Корзина</span>
+          <b id="headerCartCount">0</b>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="hero-content">
+        <div class="hero-copy">
+          <p class="eyebrow"><span></span> Готовим после заказа</p>
+          <h1>БОЛЬШОЙ ВКУС.<br><em>БЫСТРАЯ ДОСТАВКА.</em></h1>
+          <p class="hero-text">Любимые роллы, пицца и сочный фастфуд. Выберите блюда, а готовый заказ сразу отправится нам в WhatsApp.</p>
+          <div class="hero-actions">
+            <a class="primary-button" href="#menu">Смотреть меню</a>
+            <a class="text-button" href="https://wa.me/992007884423" target="_blank" rel="noopener">Написать в WhatsApp</a>
+          </div>
+          <div class="restaurant-status" id="restaurantStatus" aria-live="polite">
+            <i></i><span>Проверяем режим работы...</span>
+          </div>
+          <div class="hero-facts">
+            <div><strong>11:00–23:00</strong><span>Ежедневно</span></div>
+            <div><strong>0–20 сомони</strong><span>Доставка по городу</span></div>
+            <div><strong>от 150 сомони</strong><span>Доставка бесплатно</span></div>
+          </div>
+        </div>
+        <div class="hero-visual">
+          <div class="hero-ring"></div>
+          <img src="images/products/product-18.webp" alt="Фирменная шаурма Шейх Кебаб">
+          <div class="hero-badge"><b>ХИТ</b><span>от 40 с.</span></div>
+          <span class="spice spice-one">✦</span>
+          <span class="spice spice-two">✦</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="benefits" aria-label="Преимущества">
+      <div class="benefit"><span>01</span><div><b>Свежие продукты</b><small>Готовим только после заказа</small></div></div>
+      <div class="benefit"><span>02</span><div><b>Быстрая доставка</b><small>По всему Душанбе</small></div></div>
+      <div class="benefit"><span>03</span><div><b>Удобный заказ</b><small>Без регистрации через WhatsApp</small></div></div>
+    </section>
+
+    <section class="menu-section" id="menu">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow dark"><span></span> Выберите любимое</p>
+          <h2>НАШЕ МЕНЮ</h2>
+        </div>
+      </div>
+
+      <section class="popular-section" aria-labelledby="popularTitle">
+        <div class="popular-heading">
+          <div>
+            <span>Часто выбирают</span>
+            <h3 id="popularTitle">ПОПУЛЯРНОЕ</h3>
+          </div>
+          <div class="popular-arrows">
+            <button type="button" data-popular-scroll="-1" aria-label="Популярные блюда назад">←</button>
+            <button type="button" data-popular-scroll="1" aria-label="Популярные блюда вперёд">→</button>
+          </div>
+        </div>
+        <div class="popular-list" id="popularList"></div>
+      </section>
+
+      <div class="menu-tools" id="menuTools">
+        <label class="search-box">
+          <span aria-hidden="true">⌕</span>
+          <input id="searchInput" type="search" placeholder="Найти блюдо..." autocomplete="off">
+        </label>
+        <div class="category-picker" id="categoryPicker">
+          <button class="category-toggle" id="categoryToggle" type="button" aria-haspopup="listbox" aria-expanded="false">
+            <span>Категория</span>
+            <strong id="selectedCategory">Все</strong>
+            <i aria-hidden="true"></i>
+          </button>
+          <div class="category-menu" id="categoryMenu" role="listbox" aria-label="Выбрать категорию"></div>
+        </div>
+        <div class="categories" id="categories" aria-label="Категории меню"></div>
+        <button class="view-toggle" id="viewToggle" type="button" aria-label="Показать блюда списком" aria-pressed="false">
+          <i aria-hidden="true"><b></b><b></b><b></b><b></b></i><span>Список</span>
+        </button>
+      </div>
+      <div class="results-line"><span id="resultCount"></span><button id="clearFilters" type="button">Сбросить фильтры</button></div>
+      <div class="product-grid" id="productGrid"></div>
+      <div class="empty-state" id="emptyState" hidden>
+        <strong>Ничего не нашли</strong>
+        <p>Попробуйте изменить запрос или выбрать другую категорию.</p>
+      </div>
+    </section>
+
+    <section class="how-it-works">
+      <div class="section-heading light">
+        <div>
+          <p class="eyebrow"><span></span> Всё просто</p>
+          <h2>КАК ЗАКАЗАТЬ</h2>
+        </div>
+      </div>
+      <div class="steps">
+        <article><b>1</b><h3>Выберите блюда</h3><p>Добавьте всё нужное в корзину и настройте количество.</p></article>
+        <article><b>2</b><h3>Укажите детали</h3><p>Выберите доставку или самовывоз и заполните контакты.</p></article>
+        <article><b>3</b><h3>Отправьте заказ</h3><p>WhatsApp откроется с готовым сообщением для ресторана.</p></article>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <a class="brand footer-brand" href="#top">
+      <span class="brand-mark">ШК</span>
+      <span><strong>ШЕЙХ КЕБАБ</strong><small>Вкус, достойный шейха</small></span>
+    </a>
+    <p>Душанбе · Ежедневно 11:00–23:00</p>
+    <a href="https://wa.me/992007884423" target="_blank" rel="noopener">Заказать в WhatsApp</a>
+  </footer>
+
+  <button class="floating-cart" type="button" data-open-cart hidden>
+    <span>Корзина <b id="floatingCartCount">0</b></span>
+    <strong id="floatingCartTotal">0 сомони</strong>
+  </button>
+
+  <div class="drawer-overlay" id="drawerOverlay"></div>
+  <aside class="cart-drawer" id="cartDrawer" role="dialog" aria-modal="true" aria-hidden="true" inert>
+    <div class="drawer-header">
+      <div><p>Ваш заказ</p><h2>КОРЗИНА</h2></div>
+      <button class="close-button" type="button" data-close-cart aria-label="Закрыть">×</button>
+    </div>
+    <div class="cart-content" id="cartContent"></div>
+    <div class="checkout-panel" id="checkoutPanel">
+      <div class="delivery-progress">
+        <div><span id="deliveryMessage">До бесплатной доставки 150 сомони</span><b id="deliveryPercent">0%</b></div>
+        <div class="progress-track"><i id="progressBar"></i></div>
+      </div>
+      <div class="order-totals">
+        <div><span>Сумма</span><b id="subtotal">0 сомони</b></div>
+        <div><span>Доставка</span><b id="deliveryCost">0 сомони</b></div>
+        <div class="grand-total"><span>Итого</span><strong id="grandTotal">0 сомони</strong></div>
+      </div>
+      <button class="primary-button checkout-button" id="goCheckout" type="button">Оформить заказ</button>
+    </div>
+  </aside>
+
+  <div class="modal" id="checkoutModal" role="dialog" aria-modal="true" aria-hidden="true" inert>
+    <div class="modal-card">
+      <button class="close-button modal-close" type="button" data-close-checkout aria-label="Закрыть">×</button>
+      <p class="eyebrow dark"><span></span> Последний шаг</p>
+      <h2>ОФОРМЛЕНИЕ</h2>
+      <form id="checkoutForm">
+        <label>Ваше имя<input name="name" required placeholder="Как к вам обращаться?"></label>
+        <label>Номер телефона<input name="phone" type="tel" inputmode="tel" required placeholder="+992 00 788 44 23"></label>
+        <fieldset>
+          <legend>Как получить заказ?</legend>
+          <div class="segmented">
+            <label><input type="radio" name="fulfillment" value="delivery" checked><span>Доставка</span></label>
+            <label><input type="radio" name="fulfillment" value="pickup"><span>Самовывоз</span></label>
+          </div>
+        </fieldset>
+        <label id="addressField">Адрес доставки<input name="address" placeholder="Улица, дом, ориентир"></label>
+        <label>Когда приготовить
+          <select name="orderTime">
+            <option value="Как можно скорее">Как можно скорее</option>
+            <option value="Через 30 минут">Через 30 минут</option>
+            <option value="Через 60 минут">Через 60 минут</option>
+          </select>
+        </label>
+        <label>Способ оплаты
+          <select name="payment">
+            <option>Наличными</option>
+            <option>Переводом</option>
+          </select>
+        </label>
+        <label>Комментарий<textarea name="comment" rows="3" placeholder="Например: без лука, домофон не работает"></textarea></label>
+        <div class="modal-total"><span>К оплате</span><strong id="modalTotal">0 сомони</strong></div>
+        <button class="whatsapp-button" type="submit">Отправить заказ в WhatsApp</button>
+        <p class="form-note">Откроется WhatsApp с полностью готовым текстом заказа.</p>
+      </form>
+    </div>
+  </div>
+
+  <div class="product-view" id="productView" role="dialog" aria-modal="true" aria-hidden="true" inert>
+    <div class="product-view-backdrop" data-close-product></div>
+    <article class="product-view-card">
+      <button class="product-back" type="button" data-close-product aria-label="Закрыть карточку блюда">
+        <span>×</span>
+      </button>
+      <div class="product-view-media" id="productViewMedia">
+        <img id="productViewImage" src="" alt="">
+        <span class="product-view-tag" id="productViewTag"></span>
+        <div class="product-view-glow"></div>
+      </div>
+      <div class="product-view-info">
+        <span class="product-view-category" id="productViewCategory"></span>
+        <h2 id="productViewName"></h2>
+        <p id="productViewDescription"></p>
+        <div class="product-view-meta">
+          <span id="productViewSize"></span>
+          <strong id="productViewPrice"></strong>
+        </div>
+        <div class="product-view-action" id="productViewAction"></div>
+        <button class="share-product" id="shareProduct" type="button">Поделиться блюдом</button>
+        <small>Нажмите «добавить», затем оформите заказ через WhatsApp.</small>
+      </div>
+    </article>
+  </div>
+
+  <div class="toast" id="toast" role="status"></div>
+  <script src="app.js"></script>
+</body>
+</html>
