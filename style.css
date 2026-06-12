@@ -672,6 +672,8 @@ footer {
   border-radius: 10px;
   outline: 0;
   background: #fff;
+  font-size: 16px;
+  line-height: 1.35;
 }
 .modal input, .modal select { height: 46px; padding: 0 13px; }
 .modal textarea { padding: 13px; resize: vertical; }
@@ -845,7 +847,7 @@ footer {
   }
   .search-box { width: 0; min-width: 0; height: 42px; flex: 1 1 0; }
   .search-box span { font-size: 22px; }
-  .search-box input { min-width: 0; font-size: 13px; }
+  .search-box input { min-width: 0; font-size: 16px; }
   .category-picker {
     position: relative;
     width: 108px;
@@ -886,10 +888,34 @@ footer {
     border: 1px solid rgba(255,255,255,.16);
     box-shadow: 0 16px 40px rgba(0,0,0,.4);
   }
-  .modal-card { padding: 28px 20px 22px; }
+  .modal {
+    align-items: start;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+  }
+  .modal-card {
+    max-height: calc(100dvh - 40px - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+    margin: auto;
+    padding: 28px 20px 22px;
+    scroll-padding-top: 74px;
+    scroll-padding-bottom: 120px;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+  }
   .modal h2 { font-size: 28px; }
   .modal form { grid-template-columns: 1fr; }
   .modal form > * { grid-column: 1 !important; }
+  .modal input, .modal textarea, .modal select {
+    font-size: 16px;
+  }
+  .modal input, .modal textarea, .modal select, .segmented span {
+    min-height: 48px;
+  }
+  .modal form > label, .modal fieldset {
+    scroll-margin-top: 74px;
+    scroll-margin-bottom: 120px;
+  }
   .product-view {
     padding: calc(14px + env(safe-area-inset-top)) calc(14px + env(safe-area-inset-right)) calc(14px + env(safe-area-inset-bottom)) calc(14px + env(safe-area-inset-left));
     place-items: center;

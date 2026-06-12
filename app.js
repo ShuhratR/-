@@ -563,6 +563,13 @@ $("#goCheckout").addEventListener("click", openCheckout);
 $$('input[name="fulfillment"]').forEach(input => input.addEventListener("change", updateFulfillment));
 $("#checkoutForm").addEventListener("input", saveCheckoutForm);
 $("#checkoutForm").addEventListener("change", saveCheckoutForm);
+$("#checkoutForm").addEventListener("focusin", event => {
+  const field = event.target.closest("input, textarea, select");
+  if (!field || !window.matchMedia("(max-width: 760px)").matches) return;
+  setTimeout(() => {
+    field.scrollIntoView({ block: "center", behavior: "smooth" });
+  }, 320);
+});
 
 $("#shareProduct").addEventListener("click", async () => {
   const product = products.find(item => item.id === activeProductId);
