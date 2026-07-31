@@ -4,7 +4,7 @@ const SITE_CONFIG = {
   freeDeliveryFrom: 150,
 };
 
-const products = [
+let products = [
   [1,"Роллы","Филадельфия","Нежный ролл с лососем, сливочным сыром и свежим огурцом.","8 шт / 250 г",65,"Хит"],
   [2,"Роллы","Калифорния","Крабовый микс, огурец, икра масаго и сливочный сыр.","8 шт / 230 г",55,"Популярное"],
   [3,"Роллы","Запечённый ролл","Тёплый ролл под нежной сырной шапкой и фирменным соусом.","8 шт / 260 г",60,"Тёплое"],
@@ -101,8 +101,9 @@ function renderCategories() {
 }
 
 function renderPopularProducts() {
-  const popularIds = [18, 4, 13, 1, 7];
-  const popular = popularIds.map(id => products.find(item => item.id === id)).filter(Boolean);
+  const visible = products.filter(item => !item.archived);
+  const featured = visible.filter(item => item.featured).slice(0, 5);
+  const popular = featured.length ? featured : visible.slice(0, 5);
   $("#popularList").innerHTML = popular.map(item => `
     <article class="popular-card">
       <button type="button" data-view-product="${item.id}" aria-label="Открыть ${item.name}">
@@ -113,7 +114,7 @@ function renderPopularProducts() {
         <strong>${item.name}</strong>
         <footer>
           <b>${formatPrice(item.price)}</b>
-          <button class="add-button" type="button" data-add="${item.id}" aria-label="Добавить ${item.name}">+</button>
+          <button class="add-button" type="button" data-add="${item.id}" aria-label="Добавить ${item.name}" ${item.available ? "" : "disabled"}>+</button>
         </footer>
       </div>
     </article>
@@ -150,10 +151,50 @@ function updateRestaurantStatus() {
 function filteredProducts() {
   const query = normalizeSearch(state.search);
   return products.filter(item => {
+    if (item.archived) return false;
     const categoryMatch = query || state.activeCategory === "Все" || item.category === state.activeCategory;
     const searchMatch = !query || normalizeSearch(`${item.name} ${item.category} ${item.description}`).includes(query);
     return categoryMatch && searchMatch;
   });
+}
+
+async function loadSupabaseProducts() {
+  if (typeof supabaseClient === "undefined" || !supabaseClient) return;
+
+  try {
+    const { data, error } = await supabaseClient
+      .from("products")
+      .select("id, category_name, name, description, size, price, old_price, discount_percentage, available, featured, archived, tag, image_url")
+      .order("archived", { ascending: true })
+      .order("sort_order", { ascending: true });
+
+    if (error) throw error;
+    if (!Array.isArray(data) || !data.length) return;
+
+    products = data.map(item => ({
+      id: item.id,
+      category: item.category_name || item.category || "Меню",
+      name: item.name || "",
+      description: item.description || "",
+      size: item.size || "",
+      price: item.price ?? 0,
+      old_price: item.old_price ?? null,
+      discount_percentage: item.discount_percentage ?? 0,
+      available: typeof item.available === "boolean" ? item.available : true,
+      featured: !!item.featured,
+      archived: !!item.archived,
+      tag: item.tag || "",
+      image: item.image_url || item.image || `images/products/product-${String(item.id).padStart(2, "0")}.webp`,
+    }));
+
+    renderCategories();
+    renderPopularProducts();
+    renderProducts();
+    renderCart();
+  } catch (error) {
+    console.error("Supabase load error:", error);
+    showToast("Не удалось загрузить меню из Supabase, используется локальная версия.");
+  }
 }
 
 function renderProducts() {
@@ -175,13 +216,14 @@ function renderProducts() {
           <span class="product-size">${item.size}</span>
           <div class="product-footer">
             <span class="product-price">${item.price} <small>сомони</small></span>
+            ${item.old_price && item.old_price > item.price ? `<span class="product-old-price">${item.old_price} сомони</span>` : ""}
             ${quantity ? `
               <div class="card-quantity">
                 <button type="button" data-change="${item.id}" data-delta="-1">−</button>
                 <span>${quantity}</span>
                 <button type="button" data-change="${item.id}" data-delta="1">+</button>
               </div>
-            ` : `<button class="add-button" type="button" data-add="${item.id}" aria-label="Добавить ${item.name}">+</button>`}
+            ` : item.available ? `<button class="add-button" type="button" data-add="${item.id}" aria-label="Добавить ${item.name}">+</button>` : `<button class="unavailable-button" type="button" disabled>Нет в наличии</button>`}
           </div>
         </div>
       </article>
@@ -224,7 +266,13 @@ function observeProductCards() {
 }
 
 function renderProductViewAction(id) {
+  const product = products.find(item => item.id === Number(id));
   const quantity = state.cart[id] || 0;
+  if (!product) return;
+  if (!product.available) {
+    $("#productViewAction").innerHTML = `<button class="unavailable-button" type="button" disabled>Нет в наличии</button>`;
+    return;
+  }
   $("#productViewAction").innerHTML = quantity ? `
     <div class="card-quantity">
       <button type="button" data-change="${id}" data-delta="-1">−</button>
@@ -240,12 +288,12 @@ function openProductView(id) {
   activeProductId = product.id;
   $("#productViewImage").src = product.image;
   $("#productViewImage").alt = product.name;
-  $("#productViewTag").textContent = product.tag;
+  $("#productViewTag").textContent = product.tag || (product.discount_percentage ? `-${product.discount_percentage}%` : "");
   $("#productViewCategory").textContent = product.category;
   $("#productViewName").textContent = product.name;
   $("#productViewDescription").textContent = product.description;
   $("#productViewSize").textContent = product.size;
-  $("#productViewPrice").textContent = formatPrice(product.price);
+  $("#productViewPrice").textContent = product.old_price && product.old_price > product.price ? `${formatPrice(product.price)} · ${product.old_price} сомони` : formatPrice(product.price);
   $("#productView").dataset.productId = product.id;
   renderProductViewAction(product.id);
   lastFocusedElement = document.activeElement;
@@ -614,6 +662,7 @@ renderCategories();
 renderPopularProducts();
 renderProducts();
 renderCart();
+loadSupabaseProducts();
 updateFulfillment();
 updateRestaurantStatus();
 setInterval(updateRestaurantStatus, 60000);

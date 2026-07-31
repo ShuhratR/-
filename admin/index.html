@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#a91418">
+  <title>Шейх Кебаб — Админ-панель</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Unbounded:wght@700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="./admin.css">
+</head>
+<body>
+  <header class="site-header admin-header">
+    <div class="header-inner admin-header-inner">
+      <a class="brand" href="../index.html" aria-label="Перейти на сайт">
+        <span class="brand-mark">ШК</span>
+        <span>
+          <strong>ШЕЙХ КЕБАБ</strong>
+          <small>Админ-панель</small>
+        </span>
+      </a>
+      <div class="header-actions admin-header-actions">
+        <button class="text-button sign-out" type="button" id="signOutButtonLarge" hidden>Выйти</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="admin-main">
+    <section class="admin-auth-card" id="loginScreen">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow"><span></span> Вход администратора</p>
+          <h2>Авторизация</h2>
+        </div>
+      </div>
+      <form id="loginForm" class="admin-form-grid">
+        <div class="admin-alert" id="authMessage" hidden></div>
+        <label class="full-width">
+          Почта администратора
+          <input id="email" type="email" class="admin-input" autocomplete="username" required>
+        </label>
+        <label class="full-width">
+          Пароль
+          <input id="password" type="password" class="admin-input" autocomplete="current-password" required>
+        </label>
+        <div class="admin-form-footer full-width">
+          <button class="primary-button" type="submit">Войти</button>
+        </div>
+      </form>
+      <p class="form-note">Войдите, чтобы управлять меню, категориями и товарами.</p>
+    </section>
+
+    <section class="admin-panel" id="adminPanel" hidden>
+      <div class="admin-panel-header">
+        <div>
+          <p class="eyebrow"><span></span> Администрирование</p>
+          <h2>Панель управления</h2>
+        </div>
+        <div class="admin-actions">
+          <button class="primary-button" type="button" id="refreshButton">Обновить</button>
+          <button class="text-button sign-out" type="button" id="signOutButton" hidden>Выйти</button>
+        </div>
+      </div>
+
+      <div class="admin-grid">
+        <article class="admin-card admin-stats">
+          <div class="stats-card" id="statProducts">
+            <span>Товары</span>
+            <strong>0</strong>
+            <small>В базе</small>
+          </div>
+          <div class="stats-card" id="statCategories">
+            <span>Категории</span>
+            <strong>0</strong>
+            <small>В базе</small>
+          </div>
+          <div class="stats-card" id="statArchived">
+            <span>Архив</span>
+            <strong>0</strong>
+            <small>Архивных товаров</small>
+          </div>
+          <div class="stats-card" id="statFeatured">
+            <span>Хиты</span>
+            <strong>0</strong>
+            <small>Рекомендуемых</small>
+          </div>
+        </article>
+
+        <article class="admin-card admin-categories">
+          <div class="admin-section-header">
+            <div>
+              <p class="eyebrow dark"><span></span> Категории</p>
+              <h3>Управление категориями</h3>
+            </div>
+            <div class="admin-section-actions">
+              <button class="primary-button" type="button" id="newCategoryButton">Новая категория</button>
+            </div>
+          </div>
+          <div id="categoryList"></div>
+        </article>
+      </div>
+
+      <article class="admin-card admin-products">
+        <div class="admin-section-header">
+          <div>
+            <p class="eyebrow dark"><span></span> Товары</p>
+            <h3>Управление продуктами</h3>
+          </div>
+          <div class="admin-section-actions">
+            <button class="primary-button" type="button" id="newProductButton">Добавить товар</button>
+          </div>
+        </div>
+        <div id="productList"></div>
+      </article>
+    </section>
+  </main>
+
+  <div class="admin-modal" id="adminModal">
+    <div class="admin-modal-card">
+      <button class="close-button modal-close" type="button" id="adminClose" aria-label="Закрыть">×</button>
+      <p class="eyebrow dark"><span></span> Управление</p>
+      <h2 id="adminModalTitle">Форма</h2>
+      <form id="adminForm" class="admin-form-grid">
+        <div class="admin-alert" id="modalMessage" hidden></div>
+        <label class="full-width">
+          Название товара
+          <input id="productName" class="admin-input" required>
+        </label>
+        <label class="full-width">
+          Краткое описание
+          <textarea id="productDescription" class="admin-input" rows="3" required></textarea>
+        </label>
+        <label>
+          Категория
+          <select id="productCategory" class="admin-input" required></select>
+        </label>
+        <label>
+          Размер / порция
+          <input id="productSize" class="admin-input" placeholder="Например: 8 шт / 250 г">
+        </label>
+        <label>
+          Цена, сомони
+          <input id="productPrice" type="number" class="admin-input" min="0" step="1" required>
+        </label>
+        <label>
+          Старая цена, сомони
+          <input id="productOldPrice" type="number" class="admin-input" min="0" step="1">
+        </label>
+        <label>
+          Скидка %
+          <input id="productDiscount" type="number" class="admin-input" min="0" max="99" step="1">
+        </label>
+        <label class="admin-checkbox">
+          <input id="productAvailable" type="checkbox" checked>
+          В наличии
+        </label>
+        <label class="admin-checkbox">
+          <input id="productFeatured" type="checkbox">
+          Хит / рекомендованный
+        </label>
+        <label>
+          Порядок сортировки
+          <input id="productSortOrder" type="number" class="admin-input" min="0" step="1" value="0">
+        </label>
+        <label class="full-width">
+          Тег на карточке
+          <input id="productTag" class="admin-input" placeholder="Например: Хит, Популярное">
+        </label>
+        <label class="full-width">
+          Изображение
+          <input id="imageInput" type="file" accept="image/*" class="admin-input">
+        </label>
+        <div class="full-width">
+          <div id="imagePreview" class="admin-image-preview"></div>
+        </div>
+        <input id="productId" type="hidden">
+        <div class="admin-form-footer full-width">
+          <button class="text-button" type="button" id="cancelModal">Отмена</button>
+          <button class="primary-button" type="submit" id="adminSave">Сохранить</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="toast" id="adminToast"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/supabase.min.js"></script>
+  <script src="../supabase.config.js"></script>
+  <script src="./admin.js"></script>
+</body>
+</html>

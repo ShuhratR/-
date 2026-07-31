@@ -522,7 +522,7 @@ img { display: block; max-width: 100%; }
   line-height: 1.55;
 }
 .product-size { margin-top: 10px; color: #806f6d; font-size: 10px; }
-.product-footer { margin-top: auto; padding-top: 16px; display: flex; align-items: center; justify-content: space-between; }
+.product-footer { margin-top: auto; padding-top: 16px; display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
 .product-price { font-family: "Unbounded"; font-size: 17px; }
 .product-price { color: #fff; }
 .product-price small { font-family: "Manrope"; font-size: 10px; }
@@ -533,6 +533,25 @@ img { display: block; max-width: 100%; }
   font-weight: 800;
 }
 .add-button { width: 38px; height: 38px; border-radius: 10px; color: #fff; background: var(--red); font-size: 20px; }
+.unavailable-button,
+.add-button.disabled,
+.add-button:disabled,
+.primary-button.disabled,
+.primary-button:disabled {
+  width: auto;
+  min-width: 120px;
+  padding: 0 14px;
+  color: #f1ece6;
+  background: rgba(255,255,255,.1);
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .3px;
+  cursor: not-allowed;
+  opacity: .8;
+  transition: none;
+}
+.unavailable-button { display: inline-flex; justify-content: center; align-items: center; height: 38px; }
 .card-quantity { display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 800; }
 .card-quantity button { width: 30px; height: 30px; border-radius: 8px; background: #f1ece6; }
 .empty-state { padding: 80px 20px; text-align: center; }
@@ -552,12 +571,95 @@ footer {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 18px;
   color: #e2d8d4;
   background: #0e0c0c;
   font-size: 12px;
 }
 .footer-brand .brand-mark { width: 38px; height: 38px; font-size: 10px; }
 .footer-brand strong { color: #fff; font-size: 12px; }
+
+.hero-content,
+.hero-facts,
+.menu-tools,
+.steps,
+footer {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.popular-card div { min-width: 0; }
+.popular-card strong { white-space: normal; }
+.popular-card small,
+.product-category,
+.product-price,
+.product-tag,
+.product-desc,
+.hero-text,
+.section-heading h2,
+.hero h1,
+.steps h3,
+.steps p,
+.footer-brand span,
+.category-toggle strong {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.menu-tools {
+  overflow-x: auto;
+  min-width: 0;
+}
+
+@media (max-width: 1080px) {
+  .product-grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+@media (max-width: 900px) {
+  .hero-content {
+    grid-template-columns: 1fr;
+    gap: 36px;
+  }
+  .hero-visual { order: -1; }
+  .hero-facts { flex-wrap: wrap; gap: 14px; }
+  .hero-actions { flex-wrap: wrap; gap: 12px; }
+  .menu-tools { top: 70px; }
+  .product-grid { grid-template-columns: repeat(2, 1fr); }
+  .steps { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 720px) {
+  .hero h1 { font-size: clamp(34px, 8vw, 48px); }
+  .hero-facts { gap: 12px; }
+  .menu-tools {
+    flex-wrap: wrap;
+    gap: 12px;
+    padding: 12px;
+  }
+  .search-box,
+  .view-toggle,
+  .category-toggle,
+  .categories {
+    min-width: 0;
+  }
+  .product-grid { grid-template-columns: 1fr; }
+  .product-grid.list-view { grid-template-columns: 1fr; }
+  .product-card { min-height: auto; }
+  .product-body { min-height: auto; }
+  .product-footer { flex-direction: column; align-items: flex-start; gap: 10px; }
+  .how-it-works { padding: 60px max(20px, calc((100% - 1180px) / 2)); }
+  .steps { grid-template-columns: 1fr; }
+  footer { flex-direction: column; align-items: flex-start; }
+}
+
+@media (max-width: 560px) {
+  .section-heading { flex-direction: column; align-items: flex-start; gap: 18px; }
+  .popular-card { grid-template-columns: 1fr; min-height: auto; }
+  .popular-card > button:first-child { width: 100%; }
+  .popular-card img { height: 180px; }
+  .product-price { font-size: 16px; }
+  .hero-visual img { width: min(340px, 92%); }
+}
 .footer-brand small { color: #766e6b; }
 
 .floating-cart {
