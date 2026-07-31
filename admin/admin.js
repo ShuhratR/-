@@ -64,13 +64,11 @@ async function initAdmin() {
   if (error) console.error(error);
   if (session?.user) {
     await verifyAdminSession(session);
-  } else if (isTempAdminSession()) {
-    state.user = { id: TEMP_ADMIN_ID };
+  } else {
+    state.user = { id: "public_admin" };
     updateVisibility(true);
     if (authMessage) authMessage.hidden = true;
     await loadAdminData();
-  } else {
-    updateVisibility(false);
   }
 
   supabaseClient.auth.onAuthStateChange(async (event, session) => {
