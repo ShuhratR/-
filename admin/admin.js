@@ -24,7 +24,7 @@ const state = {
   modalType: null,
 };
 
-const TEMP_ADMIN_ID = "1";
+const TEMP_ADMIN_ID = "ruzimatzodashuhrat@gmail.com";
 const TEMP_ADMIN_PIN = "2";
 const TEMP_ADMIN_SESSION_KEY = "tempAdminAuth";
 
